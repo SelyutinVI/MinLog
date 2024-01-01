@@ -1,8 +1,8 @@
 mod log;
 mod lvl;
-mod duration;
+mod lifetime;
 
 pub(crate) use log::Log;
-use lvl::Level;
-use duration::Lifetime;
+pub(crate) use lvl::Level;
+use lifetime::Lifetime;
 

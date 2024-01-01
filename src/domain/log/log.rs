@@ -6,8 +6,8 @@ use std::{collections::HashMap, str::FromStr};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub(crate) struct Log {
-    msg: String,
-    level: Level,
+    pub msg: String,
+    pub level: Level,
     lifetime: Lifetime,
     body: Option<HashMap<String, String>>,
 }
@@ -36,7 +36,6 @@ impl Log {
 #[cfg(test)]
 mod tests {
     use crate::error::Error;
-
     use super::*;
 
     #[test]
