@@ -1,3 +1,3 @@
 mod log;
 
-pub(crate) use log::*;
+pub use log::*;

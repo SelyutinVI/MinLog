@@ -1,10 +1,10 @@
 use super::super::{Logger, Storage};
-use crate::domain::{Level, Log};
+use crate::domain::{Level, Log, Lifetime};
 use crate::Result;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
-pub(crate) struct JustLogger<T>
+pub struct JustLogger<T>
 where
     T: Storage,
 {
@@ -13,8 +13,17 @@ where
 }
 
 impl<T: Storage> JustLogger<T> {
-    pub(crate) fn new(storage: T, min_lvl: Option<Level>) -> Self {
-        JustLogger { storage, min_lvl }
+    pub fn new(storage: T, min_lvl: Option<Level>) -> Self {        
+        let new_logger = JustLogger { storage, min_lvl };
+        return new_logger;
+    }
+    
+    pub fn cleanup(&self) {
+        let obsolete_logs = self.storage.find(|l| {
+            l.lifetime == Lifetime::XS
+        });
+        println!("Obsolete logs: {:?}", obsolete_logs);
+        self.storage.delete(obsolete_logs);
     }
 }
 
@@ -41,6 +50,7 @@ impl<T: Storage> Logger for JustLogger<T> {
         return self.storage.find(predicate);
     }
 }
+
 
 #[cfg(test)]
 mod tests {

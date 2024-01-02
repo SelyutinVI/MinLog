@@ -12,9 +12,25 @@ mod web;
 
 #[tokio::main]
 async fn main() {
-    let _config = Config::new();
-    let logger = LoggerBuilder::new().use_local_storage().build_just_logger();
-    let _ = tokio::spawn(web::start(Arc::new(logger)));
+    let _config = Config::default();
+    let logger = LoggerBuilder::new()
+        .set_min_level(domain::Level::Debug)
+        .use_local_storage()
+        .build_just_logger();
+    let logger = Arc::new(logger);
+    
+    // start HTTP server
+    let _ = tokio::spawn(web::start(logger.clone()));
+
+    // start cleanup
+    let _ = tokio::spawn( async move {
+        let mut interval = tokio::time::interval(std::time::Duration::from_secs(60));
+        loop {
+            interval.tick().await;
+            logger.cleanup();
+            print!("Cleanup logs");
+        }
+    });
 
     loop {
         let mut command = String::new();

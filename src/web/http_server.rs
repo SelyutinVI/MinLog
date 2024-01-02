@@ -10,7 +10,7 @@ use tokio::net::TcpListener;
 
 use crate::web::get_route_log;
 
-pub(crate) async fn start<T>(logger: Arc<T>)
+pub async fn start<T>(logger: Arc<T>)
 where
     T: Logger + Send + Sync + 'static,
 {

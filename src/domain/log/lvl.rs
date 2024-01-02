@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::{Error, Result};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, PartialOrd, Eq, Ord)]
-pub(crate) enum Level {
+pub enum Level {
     Debug,
     Trace,
     Info,
@@ -60,7 +60,7 @@ mod tests {
         assert_eq!(Level::from_str("info").unwrap(), Level::Info);
         assert_eq!(Level::from_str("debug").unwrap(), Level::Debug);
         assert_eq!(Level::from_str("trace").unwrap(), Level::Trace);
-        
+
         assert_eq!(Level::from_str("unknown"), Err(Error::InvalidLevel));
     }
 

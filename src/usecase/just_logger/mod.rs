@@ -1,3 +1,3 @@
 mod logger;
 
-pub(crate) use logger::JustLogger;
+pub use logger::JustLogger;

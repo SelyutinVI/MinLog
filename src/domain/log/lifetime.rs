@@ -4,7 +4,7 @@ use std::str::FromStr;
 use crate::{Error, Result};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialOrd, Ord, PartialEq)]
-pub(crate) enum Lifetime {
+pub enum Lifetime {
     XS,
     S,
     M,
@@ -45,7 +45,7 @@ impl ToString for Lifetime {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_lifetime_to_string() {
         assert_eq!(Lifetime::XS.to_string(), "xs");

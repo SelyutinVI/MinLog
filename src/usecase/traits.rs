@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::domain::Log;
 use crate::Result;
 
-pub(crate) trait Logger {
+pub trait Logger {
     fn log(
         &self,
         msg: impl Into<String> + Send,
@@ -17,10 +17,10 @@ pub(crate) trait Logger {
         F: Fn(&Log) -> bool + Send + 'static;
 }
 
-pub(crate) trait Storage {
+pub trait Storage {
     fn save(&self, log: Log) -> Result<()>;
     fn find<F>(&self, func: F) -> Vec<Log>
     where
         F: Fn(&Log) -> bool;
-    fn delete(&self, log: Log);
+    fn delete(&self, log: Vec<Log>);
 }

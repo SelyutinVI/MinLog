@@ -7,7 +7,7 @@ use serde_json::{json, Value};
 use crate::domain::Log;
 use crate::usecase::Logger;
 
-pub(crate) fn get_route_log<T>(logger: Arc<T>) -> Router
+pub fn get_route_log<T>(logger: Arc<T>) -> Router
 where
     T: Logger + Send + Sync + 'static,
 {
@@ -51,7 +51,7 @@ where
 
 pub async fn get_all_log<T>(logger: State<Arc<T>>) -> impl IntoResponse
 where
-    T: Logger ,
+    T: Logger,
 {
     let predicate = |_l: &Log| {
         return true;
@@ -62,9 +62,9 @@ where
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub(crate) struct LogDTO {
-    pub(crate) msg: Option<String>,
-    pub(crate) level: Option<String>,
-    pub(crate) lifetime: Option<String>,
-    pub(crate) body: Option<Value>,
+pub struct LogDTO {
+    pub msg: Option<String>,
+    pub level: Option<String>,
+    pub lifetime: Option<String>,
+    pub body: Option<Value>,
 }
