@@ -1,5 +1,5 @@
-use super::{JustLogger, Storage};
-use crate::{domain::Level, storage::LocalStorage};
+use super::{CommonLogger, Storage};
+use crate::domain::Level;
 
 pub struct HasStorage<S: Storage>(S);
 pub struct NoStorage;
@@ -17,8 +17,7 @@ impl LoggerBuilder<NoStorage> {
         }
     }
 
-    pub fn use_local_storage(self) -> LoggerBuilder<HasStorage<LocalStorage>> {
-        let storage = LocalStorage::new();
+    pub fn use_storage<T: Storage>(self, storage: T) -> LoggerBuilder<HasStorage<T>> {
         LoggerBuilder {
             storage: HasStorage(storage),
             min_level: self.min_level,
@@ -27,8 +26,8 @@ impl LoggerBuilder<NoStorage> {
 }
 
 impl<T: Storage> LoggerBuilder<HasStorage<T>> {
-    pub fn build_just_logger(self) -> JustLogger<T> {
-        JustLogger::new(self.storage.0, self.min_level)
+    pub fn build_common_logger(self) -> CommonLogger<T> {
+        CommonLogger::new(self.storage.0, self.min_level)
     }
 }
 

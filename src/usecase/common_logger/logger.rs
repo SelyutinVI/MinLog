@@ -4,7 +4,7 @@ use crate::Result;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
-pub struct JustLogger<T>
+pub struct CommonLogger<T>
 where
     T: Storage,
 {
@@ -12,9 +12,9 @@ where
     min_lvl: Option<Level>,
 }
 
-impl<T: Storage> JustLogger<T> {
+impl<T: Storage> CommonLogger<T> {
     pub fn new(storage: T, min_lvl: Option<Level>) -> Self {        
-        let new_logger = JustLogger { storage, min_lvl };
+        let new_logger = CommonLogger { storage, min_lvl };
         return new_logger;
     }
     
@@ -22,12 +22,12 @@ impl<T: Storage> JustLogger<T> {
         let obsolete_logs = self.storage.find(|l| {
             l.lifetime == Lifetime::XS
         });
-        println!("Obsolete logs: {:?}", obsolete_logs);
+        
         self.storage.delete(obsolete_logs);
     }
 }
 
-impl<T: Storage> Logger for JustLogger<T> {
+impl<T: Storage> Logger for CommonLogger<T> {
     fn log(
         &self,
         msg: impl Into<String>,
@@ -59,7 +59,7 @@ mod tests {
 
     #[test]
     fn test_log() {
-        let logger = JustLogger::new(LocalStorage::new(), Some(Level::Info));
+        let logger = CommonLogger::new(LocalStorage::new(), Some(Level::Info));
         let logs = logger.find_logs(move |_| true);
         assert!(logs.len() == 0);
 
@@ -72,7 +72,7 @@ mod tests {
 
     #[test]
     fn test_log_with_less_lvl() {
-        let logger = JustLogger::new(LocalStorage::new(), Some(Level::Info));
+        let logger = CommonLogger::new(LocalStorage::new(), Some(Level::Info));
         let logs = logger.find_logs(move |_| true);
         assert!(logs.len() == 0);
 

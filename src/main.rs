@@ -1,5 +1,6 @@
 use config::Config;
 use error::*;
+use storage::LocalStorage;
 use std::sync::Arc;
 use usecase::LoggerBuilder;
 
@@ -15,8 +16,8 @@ async fn main() {
     let _config = Config::default();
     let logger = LoggerBuilder::new()
         .set_min_level(domain::Level::Debug)
-        .use_local_storage()
-        .build_just_logger();
+        .use_storage(LocalStorage::new())
+        .build_common_logger();
     let logger = Arc::new(logger);
     
     // start HTTP server
@@ -28,7 +29,6 @@ async fn main() {
         loop {
             interval.tick().await;
             logger.cleanup();
-            print!("Cleanup logs");
         }
     });
 
