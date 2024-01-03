@@ -15,6 +15,8 @@ pub trait Logger {
     fn find_logs<F>(&self, predicate: F) -> Vec<Log>
     where
         F: Fn(&Log) -> bool + Send + 'static;
+
+    fn cleanup(&self);
 }
 
 pub trait Storage {

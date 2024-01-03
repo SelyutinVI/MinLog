@@ -17,14 +17,6 @@ impl<T: Storage> CommonLogger<T> {
         let new_logger = CommonLogger { storage, min_lvl };
         return new_logger;
     }
-    
-    pub fn cleanup(&self) {
-        let obsolete_logs = self.storage.find(|l| {
-            l.lifetime == Lifetime::XS
-        });
-        
-        self.storage.delete(obsolete_logs);
-    }
 }
 
 impl<T: Storage> Logger for CommonLogger<T> {
@@ -48,6 +40,14 @@ impl<T: Storage> Logger for CommonLogger<T> {
         F: Fn(&Log) -> bool + Send + 'static,
     {
         return self.storage.find(predicate);
+    }
+
+    fn cleanup(&self) {
+        let obsolete_logs = self.storage.find(|l| {
+            l.lifetime == Lifetime::XS
+        });
+        
+        self.storage.delete(obsolete_logs);
     }
 }
 

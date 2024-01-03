@@ -2,7 +2,7 @@ use config::Config;
 use error::*;
 use storage::LocalStorage;
 use std::sync::Arc;
-use usecase::LoggerBuilder;
+use usecase::{LoggerBuilder, Logger};
 
 mod config;
 mod domain;
@@ -15,7 +15,7 @@ mod web;
 async fn main() {
     let _config = Config::default();
     let logger = LoggerBuilder::new()
-        .set_min_level(domain::Level::Debug)
+        .use_min_level(domain::Level::Debug)
         .use_storage(LocalStorage::new())
         .build_common_logger();
     let logger = Arc::new(logger);

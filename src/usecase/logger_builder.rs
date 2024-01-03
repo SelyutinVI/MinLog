@@ -9,8 +9,15 @@ pub struct LoggerBuilder<S> {
     min_level: Option<Level>,
 }
 
+impl<T> LoggerBuilder<T> {
+    pub fn use_min_level(mut self, lvl: Level) -> Self {
+        self.min_level = Some(lvl);
+        return self;
+    }
+}
+
 impl LoggerBuilder<NoStorage> {
-    pub fn new() -> Self {
+    pub fn new() -> LoggerBuilder<NoStorage> {
         LoggerBuilder {
             storage: NoStorage,
             min_level: None,
@@ -28,12 +35,5 @@ impl LoggerBuilder<NoStorage> {
 impl<T: Storage> LoggerBuilder<HasStorage<T>> {
     pub fn build_common_logger(self) -> CommonLogger<T> {
         CommonLogger::new(self.storage.0, self.min_level)
-    }
-}
-
-impl<T> LoggerBuilder<T> {
-    pub fn set_min_level(mut self, lvl: Level) -> Self {
-        self.min_level = Some(lvl);
-        return self;
     }
 }

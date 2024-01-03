@@ -1,7 +1,5 @@
 use std::time::Duration;
 
-use crate::domain::Lifetime;
-
 #[derive(serde::Deserialize, Debug)]
 pub struct ConfigDataBase {
     pub host: Option<String>,
