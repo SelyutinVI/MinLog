@@ -25,7 +25,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn from_env() -> Self {
+    pub fn _from_env() -> Self {
         let mut conf = Config {
             database: None,
             lifetime: None,
@@ -43,7 +43,7 @@ impl Config {
         return conf;
     }
 
-    pub fn from_file() -> Self {
+    pub fn _from_file() -> Self {
         panic!("not implemented");
     }
 }

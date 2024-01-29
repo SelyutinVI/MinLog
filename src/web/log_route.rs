@@ -9,7 +9,7 @@ use crate::usecase::Logger;
 
 pub fn get_route_log<T>(logger: Arc<T>) -> Router
 where
-    T: Logger + Send + Sync + 'static,
+    T: Logger + Clone + Send + Sync + 'static,
 {
     Router::new()
         .route("/log", post(post_log::<T>).get(get_all_log::<T>))
